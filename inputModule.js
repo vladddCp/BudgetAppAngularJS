@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('inputModule', [])
-        .controller('inputController', function ($scope, $sce) {
-
-            $scope.money = [];
+        .controller('inputController', function ($scope) {
+            $scope.allExpenses = [];
+            $scope.allIncome = [];
             $scope.description = "";
             $scope.value = 0;
             $scope.type = "inc";
@@ -16,37 +16,39 @@
             $scope.date = new Date();
 
             $scope.moneyChangingHands = function () {
-                $scope.money.push({
+                getNextId();
 
-                    id: $scope.id,
-                    type: $scope.type,
-                    description: $scope.description,
-                    value: $scope.value
+                if ($scope.type == 'inc') {
+                    $scope.allIncome.push({
 
-                });
-                isValid($scope);
+                        id: $scope.id,
+                        type: $scope.type,
+                        description: $scope.description,
+                        value: $scope.value
+                    });
+                } else if ($scope.type == 'exp') {
+                    $scope.allExpenses.push({
 
-            };
+                        id: $scope.id,
+                        type: $scope.type,
+                        description: $scope.description,
+                        value: $scope.value
 
-            var isValid = function ($scope) {
-                var x;
-                for (x in $scope.money) {}
+                    });
+                }
+
             };
 
             var getNextId = function () {
                 var nextId = 0;
                 //$scope.newItem = "";
                 //Create the new ID
-                if ($scope.money.length > 0) {
-                    nextId = $scope.money.length + 1;
+                if ($scope.allExpenses.length + $scope.allIncome.length > 0) {
+                    nextId = $scope.allExpenses.length + $scope.allIncome.length + 1;
                 } else {
                     nextId = 1;
                 };
                 $scope.id = nextId;
-            };
-
-            $scope.loadMoney = function () {
-
             };
 
             $scope.addTotal = function () {
@@ -59,60 +61,9 @@
                 $scope.expensePercentage = ($scope.totalExpense / $scope.totalIncome) * 100;
             }
 
-            $scope.addIncomeListItem = function (money) {
-                if (money != null) {
-                    getNextId();
-                    $scope.element = "";
-                    $scope.htmll = "";
-
-                    {
-                        if (money.type == 'inc') {
-                            $scope.element = 'income__list';
-                            $scope.htmll = '<div class="item clearfix" id="income-' + money.id + '">' +
-                                '<div class="item__description">' + money.description + '</div>' +
-                                '<div class="right clearfix">' +
-                                '<div class="item__value">+ ' + money.value + '</div>' +
-                                '<div class="item__delete">' +
-                                '<button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>' +
-                                '</div>' +
-                                '</div>' +
-                                '</div>';
-
-                        }
-                        return $sce.trustAsHtml($scope.htmll);
-                    }
-                }
-            }
-
-            $scope.addExpenseListItem = function (money) {
-                if (money != null) {
-                    getNextId();
-                    $scope.element = "";
-                    $scope.htmll = "";
-
-                    if ($scope.money.length != 0) {
-                        if (money.type == 'exp') {
-                            $scope.element = 'expenses__list';
-                            $scope.htmll = '<div class="item clearfix" id="expense-' + money.id + '">' +
-                                '<div class="item__description">' + money.description + '</div>' +
-                                '<div class="right clearfix">' +
-                                '<div class="item__value">- ' + money.value + '</div>' +
-                                '<div class="item__percentage">' + Math.round((money.value / $scope.totalIncome) * 100) + '%</div>' +
-                                '<div class="item__delete">' +
-                                '<button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>' +
-                                '</div>' +
-                                '</div>' +
-                                '</div>';
-
-
-                        }
-                        return $sce.trustAsHtml($scope.htmll);
-                    }
-                }
-            }
-
             $scope.deleteMoney = function (muney) {
-                $scope.money = $scope.money.filter(item => item !== muney);
+                $scope.allExpenses = $scope.allExpenses.filter(item => item !== muney);
+                $scope.allIncome = $scope.allIncome.filter(item => item !== muney);
 
                 if ($scope.type == 'inc') {
                     $scope.totalIncome -= muney.value;
@@ -123,10 +74,8 @@
                 $scope.expensePercentage = ($scope.totalExpense / $scope.totalIncome) * 100;
             }
 
-            $scope.deliberatelyTrustDangerousSnippet = function (money) {
-                return $sce.trustAsHtml($scope.addListItem(money));
+            $scope.expensePerc = function (money) {
+                return Math.round((money.value / $scope.totalIncome) * 100);
             }
-
-
         })
 })();

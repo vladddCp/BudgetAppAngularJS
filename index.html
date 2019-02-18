@@ -31,7 +31,7 @@
                 <div class="budget__expenses--text">Expense</div>
                 <div class="right clearfix">
                     <div class="budget__expenses--value"> {{totalExpense | currency:"€"}}</div>
-                    <div class="budget__expenses--percentage">{{expensePercentage | number: 0  }}%</div>
+                    <div class="budget__expenses--percentage">{{expensePercentage | number: 0 }}%</div>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
 
 
 
-    <div class="bottom" >
+    <div class="bottom">
         <div class="add">
             <div class="add__container">
                 <select class="add__type" ng-model="type">
@@ -50,7 +50,6 @@
                     ng-keyup="displayDescription();">
                 <input type="number" class="add__value" placeholder="Value" ng-model="value">
                 <button class="add__btn" ng-click="moneyChangingHands(); addListItem(); addTotal();"><i class="ion-ios-checkmark-outline"></i></button>
-                
             </div>
         </div>
 
@@ -58,69 +57,39 @@
             <div class="income">
                 <h2 class="icome__title">Income</h2>
                 <div class="income__list">
-                    <ul style="list-style-type: none;" >
-                        <li ng-bind-html="addIncomeListItem(muney)" ng-repeat="muney in money" ng-click="deleteMoney(muney)"></li>
-
+                    <ul style="list-style-type: none;" ng-repeat="income in allIncome">
+                        <li>
+                            <div class="item clearfix" id="income-{{income.id}}">
+                                <div class="item__description">{{income.description}}</div>
+                                <div class="right clearfix">
+                                    <div class="item__value">{{income.value}}</div>
+                                    <div class="item__delete">
+                                        <button class="item__delete--btn" ng-click="deleteMoney(income)"><i class="ion-ios-close-outline"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
-
-                    <!--
-                        <div class="item clearfix" id="income-0">
-                            <div class="item__description">Salary</div>
-                            <div class="right clearfix">
-                                <div class="item__value">+ 2,100.00</div>
-                                <div class="item__delete">
-                                    <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="item clearfix" id="income-1">
-                            <div class="item__description">Sold car</div>
-                            <div class="right clearfix">
-                                <div class="item__value">+ 1,500.00</div>
-                                <div class="item__delete">
-                                    <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        -->
-
                 </div>
             </div>
-
-
 
             <div class="expenses">
                 <h2 class="expenses__title">Expenses</h2>
                 <div class="expenses__list">
-                    <ul style="list-style-type: none;" ng-repeat="muney in money" ng-click="deleteMoney(muney)">
-                        <li ng-bind-html="addExpenseListItem(muney)"></li>
-
+                    <ul style="list-style-type: none;" ng-repeat="expense in allExpenses">
+                        <li>
+                            <div class="item clearfix" id="expense-{{expense.id}}">
+                                <div class="item__description">{{expense.description}}</div>
+                                <div class="right clearfix">
+                                    <div class="item__value">{{expense.value}}</div>
+                                    <div class="item__percentage">{{expensePerc(expense)}}</div>
+                                    <div class="item__delete">
+                                        <button class="item__delete--btn" ng-click="deleteMoney(expense)"><i class="ion-ios-close-outline"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
-                    <!--
-                        <div class="item clearfix" id="expense-0">
-                            <div class="item__description">Apartment rent</div>
-                            <div class="right clearfix">
-                                <div class="item__value">- 900.00</div>
-                                <div class="item__percentage">21%</div>
-                                <div class="item__delete">
-                                    <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="item clearfix" id="expense-1">
-                            <div class="item__description">Grocery shopping</div>
-                            <div class="right clearfix">
-                                <div class="item__value">- 435.28</div>
-                                <div class="item__percentage">10%</div>
-                                <div class="item__delete">
-                                    <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        -->
-
                 </div>
             </div>
         </div>
@@ -129,7 +98,6 @@
     </div>
     <script src="angular.js"></script>
     <script src="inputModule.js"></script>
-    <!--<script src="outputController.js"></script>-->
 
 </body>
 
